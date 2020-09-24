@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>礙航通報2geojson</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="src/styles.css" />
+   </head>
+
+  <body>
+    <div class="row">
+    <div id="mapid" class="columnleft"></div>
+    <div class="columnright">
+      <br>
+      <h1 class="center">礙航通報 geojson格式生成</h1>
+      <br>
+
+      <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'tabTable')">表格</button>
+        <button class="tablinks" onclick="openTab(event, 'tabGeojson')">Geojson文件</button>
+      </div>
+
+      <div id="tabTable" class="tabcontent">
+      <div>
+      <table class="table">
+        <tr>
+          <th>欄位</th>
+          <th>說明</th>
+          <th>欄位內容</th>
+        </tr>
+        <tr>
+          <td>通報名稱</td>
+          <td>公告名稱</td>
+          <td><input type="text" id='title' value="科科院九月火砲射擊"></td>
+        </tr>
+        <tr>
+          <td>單位</td>
+          <td>發報單位</td>
+          <td><input type="text" id='issuer' value="中科院"></td>
+        </tr>
+        <tr>
+          <td>礙航類別</td>
+          <td>射擊通報、礙航、其他</td>
+          <td><input type="text" id='reason' value="火砲射擊"></td>
+        </tr>
+        <tr>
+          <td>開始時間</td>
+          <td>公告開始時間(UTC)</td>
+          <td><input type="text" id='startTime' value="2020-09-08T05:00:00.000Z"></td>
+        </tr>
+        <tr>
+          <td>結束時間</td>
+          <td>公告結束時間(UTC)</td>
+          <td><input type="text" id='endTime' value="2020-09-08T09:00:00.000Z"></td>
+        </tr>
+        <tr>
+          <td>限制區域</td>
+          <td>多邊形的頂點座標以順(逆)時針ABCDA順序排列，點座標以[經度,緯度]標示(單位為度)，各點以逗號區隔。如區域非多邊形則以多點近似弧線。</td>
+          <td id="coordCell">
+            <!-- <input type="text" id="polygon" value='[22.5333, 121.0 ]' /> <button type="button" onclick='addEntry();'>加入</button>-->
+             <br>
+             <textarea id="coordLst" rows="8" cols="25"></textarea>
+             <br>
+             <button type="button" onclick='clearAllEntry();'>清空</button>
+          </td>
+        </tr>
+        <tr>
+          <td>區域中心</td>
+          <td>區域中心，點座標以[經度,緯度]標示(單位為度)</td>
+          <td>
+            <input type="text" id="coord" value='[22.2, 121.1333]'>
+          </td>
+        </tr>
+      </table>
+      </div>
+      <button type="button" onclick='processData();' class="center">生成圖資</button>
+      <button type="button" onclick='updateGeojson();'class="center">生成/更新geojson</button>
+      <br>
+    </div>
+
+    <!-- geojson tab -->
+      <div id="tabGeojson" class="tabcontent">
+        <p>將欲編輯之geojson文檔黏貼至以下區域</p>
+        <div id="titleList"></div>
+        <button type="button" onclick='parseGeojson();'>解析本geojson文檔</button><br>
+        <button type="button" onclick='checkGeojson();'>測試本geojson文檔</button>
+      <textarea id="code" rows="20" cols="100"></textarea>
+      </div>
+
+    </div>
+    </div>
+   <script>
+      (function($){
+       $('#mapid').height(window.innerHeight);
+       console.log(window.innerHeight);
+    })($)
+    </script> 
+  <script src="src/map.js"></script>
+  </body>
+</html>
