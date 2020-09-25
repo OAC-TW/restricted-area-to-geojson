@@ -98,6 +98,7 @@
             lcontrol.remove(mymap);
             lcontrol = L.control.layers(baseMaps,overlayMaps).addTo(mymap);
             //mymap.fitBounds(tableLayer.getBounds());
+            document.getElementById("updateAlert").innerHTML= "限制區域繪製於左方地圖!";
             };
 
             //更新geojson 按鈕
@@ -131,7 +132,7 @@
                 var newdiv = document.createElement("div");
                 for (i = 0; i < jsontxt.features.length; i++) {
                         //featureTitleLst.push(jsontxt.feature[i].properties.title);
-                        newdiv.appendChild(document.createTextNode(String(i)+'. '+JSON.stringify(jsontxt.features[i].properties.名稱)));
+                        newdiv.appendChild(document.createTextNode(String(i+1)+'. '+JSON.stringify(jsontxt.features[i].properties.名稱)));
                         newdiv.appendChild(document.createElement("br"));
                 };
                 //list titles
