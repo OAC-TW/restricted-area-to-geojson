@@ -4,6 +4,10 @@ body {
   padding: 0;
 }
 
+#mapid { 
+  height: 1000px; 
+}
+
 .center {
   margin: auto;
   width: 50%;
@@ -16,6 +20,7 @@ td {
 
 .row {
   display: flex;
+  height: 800px;
 }
 
 .columnleft {
@@ -24,7 +29,10 @@ td {
 
 .columnright {
   flex: 60%;
+  align-items: center;
+  margin:5px;
 }
+
 
 
 /* Style the tab */

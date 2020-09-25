@@ -1,15 +1,36 @@
 
-      // 建立 Leaflet 地圖
-      var mymap = L.map("mapid");
-
-      // 設定經緯度座標
-      mymap.setView(new L.LatLng(22.2, 121.1333), 8);
-
       // 設定圖資來源
       var osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
       var osm = new L.TileLayer(osmUrl, { minZoom: 6, maxZoom: 16 });
-      mymap.addLayer(osm);
       
+      
+      var emptyGeojson = {
+        "type": "FeatureCollection",
+        "features": []
+      };
+      document.getElementById("code").value= JSON.stringify(emptyGeojson);
+      var geoJSONLayer = L.geoJSON(JSON.parse(document.getElementById("code").value));
+      var tableLayer = L.geoJSON(emptyGeojson);
+
+      var baseMaps = {
+        "osm": osm
+      };
+    
+      var overlayMaps = {
+        "geojson圖層": geoJSONLayer,
+        "測試圖層": tableLayer
+      };
+
+      // 建立 Leaflet 地圖
+      var mymap = L.map("mapid");
+      mymap.addLayer(osm);
+      mymap.addLayer(geoJSONLayer);
+      mymap.addLayer(tableLayer);
+
+      // 設定經緯度座標
+      mymap.setView(new L.LatLng(23.4, 121.1333), 8);
+      lcontrol = L.control.layers(baseMaps,overlayMaps).addTo(mymap);
+
       //default coordinates
       var coordPolyText ="[ 121, 22.5333 ],\n[ 121.25, 22.5333 ],\n[ 121.30, 22.5 ],\n[ 121.35, 21.833333 ],\n[ 121.0, 21.8333 ],\n[ 120.8667, 22 ],\n[ 120.916667, 22.416667 ],\n[ 121, 22.5333 ]"
       document.getElementById("coordLst").appendChild(document.createTextNode(coordPolyText));
@@ -51,66 +72,72 @@
                       "名稱": (document.getElementById("title").value),
                       "單位": (document.getElementById("issuer").value),
                       "礙航原因、目的": (document.getElementById("reason").value),
-                      "礙航類別": "射擊公告",
+                      "礙航類別": (document.getElementById("classification").value),
                       "開始時間": (document.getElementById("startTime").value),
                       "結束時間": (document.getElementById("endTime").value),
-                      "坐標系統": "WGS84",
+                      "坐標系統": (document.getElementById("coordSys").value),
                       "限制區域": "",
-                      "限制高度": "",
-                      "原發布公告網址": "https://www.motcmpb.gov.tw/Information/Detail/8304e08e-e252-4e16-92e7-985bca08a234?SiteId=1&NodeId=113"
+                      "限制高度": (document.getElementById("heightLimit").value),
+                      "原發布公告網址": (document.getElementById("link").value)
                     }
                   }
                 ]
               };
         return geojsonFeature     
-      }
-
-
+      };
 
     function processData() {
             var itext = document.getElementById("coord").value;
             var coordinate = JSON.parse(itext);
             console.log(coordinate);
-            //var upolygon = JSON.parse(document.getElementById("polygon").value);
-            //var upolygon = JSON.parse(document.getElementById("coordLst").value);
-            //console.log(coordLst[0]);
-            //var upolygon = JSON.parse(coordLst.push(coordLst[0]));
-            //console.log(upolygon);
-            //marker.setLatLng(coordinate);
-            //polygon.setLatLngs(upolygon);
-            //polygon.setLatLngs([[22.5333, 121.0 ],[22.5333, 121.25 ],[22.5, 121.30 ],[21.8333,121.35],[22.0, 120.8667 ],[22.416667,120.91667 ],[22.5333, 121.0 ]]);
-            //mymap.setView(coordinate, 10);
             //polygon.addTo(mymap);
             //mymap.fitBounds(polygon.getBounds());
-            L.geoJSON(getLatestGeojson()).addTo(mymap);
-            //document.getElementById("code").appendChild(document.createTextNode(JSON.stringify(geojsonFeature)));
+            //L.geoJSON(getLatestGeojson()).addTo(mymap);
+            tableLayer.clearLayers();
+            tableLayer.addData(getLatestGeojson());
+            lcontrol.remove(mymap);
+            lcontrol = L.control.layers(baseMaps,overlayMaps).addTo(mymap);
+            //mymap.fitBounds(tableLayer.getBounds());
             };
 
+            //更新geojson 按鈕
         function updateGeojson(){
                 var newjsonitem = getLatestGeojson();
-                var jsonfile = JSON.parse(document.getElementById("code").value);
+                var jsonfile;
+                if (document.getElementById("code").value==""){
+                    jsonfile = emptyGeojson;
+                }
+                else{
+                jsonfile = JSON.parse(document.getElementById("code").value);
+                };
                 for (i=0; i< newjsonitem.features.length;i++){
                 jsonfile.features.push(newjsonitem.features[i]);
                 };
                 document.getElementById("code").value= JSON.stringify(jsonfile);
-        }
+                document.getElementById("updateAlert").innerHTML= "已更新至Geojson分頁!";
+        };
 
-        function checkGeojson(){
-                L.geoJSON(JSON.parse(document.getElementById("code").value)).addTo(mymap);
+        function drawGeojson(){
+            geoJSONLayer.clearLayers();
+            geoJSONLayer.addData(JSON.parse(document.getElementById("code").value));
+                //geoJSONLayer.addTo(mymap);
+            lcontrol.remove(mymap);
+            lcontrol = L.control.layers(baseMaps,overlayMaps).addTo(mymap);
         }
-
+        //解析geojson 按鈕
         function parseGeojson(){
                 var jsontxt = JSON.parse(document.getElementById("code").value);
                 //var featureTitleLst = [];
                 var newdiv = document.createElement("div");
                 for (i = 0; i < jsontxt.features.length; i++) {
                         //featureTitleLst.push(jsontxt.feature[i].properties.title);
-                        newdiv.appendChild(document.createTextNode(JSON.stringify(jsontxt.features[i].properties.名稱)));
+                        newdiv.appendChild(document.createTextNode(String(i)+'. '+JSON.stringify(jsontxt.features[i].properties.名稱)));
                         newdiv.appendChild(document.createElement("br"));
                 };
                 //list titles
                 //newdiv.appendChild(document.createTextNode(JSON.stringify(featureTitleLst[i])))
                 document.getElementById('titleList').innerHTML=newdiv.innerHTML;
+                document.getElementById('titleNumbers').innerHTML="本文檔共有"+String(jsontxt.features.length)+"個物件：";
         }
           
 
@@ -127,6 +154,7 @@
     var coordLst = [];
  var text = ''; 
 
+ /*
 function addEntry(){
     var vertex = document.getElementById("polygon").value;
     coordLst.push(JSON.parse(vertex));
@@ -139,7 +167,7 @@ function addEntry(){
     //document.getElementById("coordCell").appendChild(document.createTextNode(vertex));
     //document.getElementById("coordCell").appendChild(document.createElement('br'));
     document.getElementById("coordLst").innerHTML=text
-}
+}*/
 
 function clearAllEntry(){
     console.log("clearing")
@@ -150,6 +178,8 @@ function clearAllEntry(){
     document.getElementById("coordLst").innerHTML=''
 }
 
+
+document.getElementById('tabTable').style.display = "block";
 
 
   function openTab(evt, tabName) {

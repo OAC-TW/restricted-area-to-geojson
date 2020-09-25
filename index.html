@@ -46,9 +46,14 @@
           <td><input type="text" id='issuer' value="中科院"></td>
         </tr>
         <tr>
+          <td>礙航原因</td>
+          <td>通報發布原因</td>
+          <td><input type="text" id='reason' value="火砲射擊"></td>
+        </tr>
+        <tr>
           <td>礙航類別</td>
           <td>射擊通報、礙航、其他</td>
-          <td><input type="text" id='reason' value="火砲射擊"></td>
+          <td><input type="text" id='classification' value="射擊通報"></td>
         </tr>
         <tr>
           <td>開始時間</td>
@@ -59,6 +64,11 @@
           <td>結束時間</td>
           <td>公告結束時間(UTC)</td>
           <td><input type="text" id='endTime' value="2020-09-08T09:00:00.000Z"></td>
+        </tr>
+        <tr>
+          <td>座標系統</td>
+          <td>座標使用之系統</td>
+          <td><input type="text" id='coordSys' value="WGS84"></td>
         </tr>
         <tr>
           <td>限制區域</td>
@@ -78,30 +88,44 @@
             <input type="text" id="coord" value='[22.2, 121.1333]'>
           </td>
         </tr>
+        <tr>
+          <td>限制高度</td>
+          <td>限制高度，請標示單位</td>
+          <td><input type="text" id='heightLimit' value="0-25000呎"></td>
+        </tr>
+        <tr>
+          <td>公告網址</td>
+          <td>通告網址連結(選填)</td>
+          <td><input type="url" id='link' value="https://www.motcmpb.gov.tw/Information/Detail/a9ef47ce-84b5-4996-af72-2d19443ed656?SiteId=1&NodeId=114"></td>
+        </tr>
       </table>
       </div>
-      <button type="button" onclick='processData();' class="center">生成圖資</button>
-      <button type="button" onclick='updateGeojson();'class="center">生成/更新geojson</button>
+      <div class="center">
+      <button type="button" onclick='processData();' style="text-align: center;">生成圖資</button>
+      <button type="button" onclick='updateGeojson();'style="">生成/更新geojson</button>
+      </div>
+      <p id="updateAlert" class="center" style="margin-right:200px;color:green;"></p>
       <br>
     </div>
 
     <!-- geojson tab -->
       <div id="tabGeojson" class="tabcontent">
         <p>將欲編輯之geojson文檔黏貼至以下區域</p>
-        <div id="titleList"></div>
         <button type="button" onclick='parseGeojson();'>解析本geojson文檔</button><br>
-        <button type="button" onclick='checkGeojson();'>測試本geojson文檔</button>
+        <p id="titleNumbers"></p>
+        <div id="titleList"></div>
+        <button type="button" onclick='drawGeojson();'>繪製本geojson文檔</button>
       <textarea id="code" rows="20" cols="100"></textarea>
       </div>
 
     </div>
     </div>
-   <script>
+   <!--<script>
       (function($){
        $('#mapid').height(window.innerHeight);
        console.log(window.innerHeight);
     })($)
-    </script> 
+    </script> -->
   <script src="src/map.js"></script>
   </body>
 </html>
