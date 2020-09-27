@@ -55,14 +55,6 @@
                   {
                     "type": "Feature",
                     "geometry": {
-                      "type": "Point",
-                      "coordinates": JSON.parse(document.getElementById("coord").value)
-                    },
-                    "properties": { "名稱": (document.getElementById("title").value)+"(中心點)","description":"危險區域中心點" }
-                  },
-                  {
-                    "type": "Feature",
-                    "geometry": {
                       "type": "Polygon",
                       "coordinates": [
                         JSON.parse('['+document.getElementById("coordLst").value+']')    
@@ -76,7 +68,7 @@
                       "開始時間": (document.getElementById("startTime").value),
                       "結束時間": (document.getElementById("endTime").value),
                       "坐標系統": (document.getElementById("coordSys").value),
-                      "限制區域": "",
+                      "限制中心": (document.getElementById("coord").value),
                       "限制高度": (document.getElementById("heightLimit").value),
                       "原發布公告網址": (document.getElementById("link").value)
                     }
@@ -125,7 +117,7 @@
             lcontrol.remove(mymap);
             lcontrol = L.control.layers(baseMaps,overlayMaps).addTo(mymap);
         }
-        //解析geojson 按鈕
+        //解析geojson 按鈕 -> 更改為editGeojson();
         function parseGeojson(){
                 var jsontxt = JSON.parse(document.getElementById("code").value);
                 //var featureTitleLst = [];

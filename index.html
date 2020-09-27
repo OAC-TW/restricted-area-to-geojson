@@ -111,9 +111,10 @@
     <!-- geojson tab -->
       <div id="tabGeojson" class="tabcontent">
         <p>將欲編輯之geojson文檔黏貼至以下區域</p>
-        <button type="button" onclick='parseGeojson();'>解析本geojson文檔</button><br>
-        <p id="titleNumbers"></p>
-        <div id="titleList"></div>
+        <button type="button" onclick='editGeoJSON();'>解析本geojson文檔</button><br>
+        <!--<p id="titleNumbers"></p>
+        <div id="titleList"></div>-->
+        <div id="eTableRegion"></div>
         <button type="button" onclick='drawGeojson();'>繪製本geojson文檔</button>
       <textarea id="code" rows="20" cols="100"></textarea>
       </div>
@@ -127,5 +128,6 @@
     })($)
     </script> -->
   <script src="src/map.js"></script>
+  <script src="src/table.js"></script>
   </body>
 </html>
