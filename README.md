@@ -14,3 +14,6 @@ Geojson 分頁可分析及編輯geojson檔案
 
 * 解析本geojson文檔： 按下後解析編輯區geojson檔案之通報數量
 * 繪製本geojson文檔： 按下後將編輯區geojson檔案繪製於左方地圖中檢視
+
+![tutorial1](src/tutorial1.jpg)
+![tutorial2](src/tutorial2.jpg)
