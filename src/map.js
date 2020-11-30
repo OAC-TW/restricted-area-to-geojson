@@ -230,6 +230,11 @@ document.getElementById('tabTable').style.display = "block";
 
 
 //DMS -> DD Converter
+
+//default DMS coordinates
+var dmsCoordText ="[\"119:58:46\",\t \"26:13:03\"],\n[\"119:59:03\",\t \"26:12:45\"],\n [\"119:58:19\",\t \"26:12:11\"],\n[\"119:58:13\",\t\"26:12:17\"],\n[\"119:58:46\",\t \"26:13:03\"]"
+document.getElementById("textDMS").appendChild(document.createTextNode(dmsCoordText));
+
 function convertDMS2DD()
 {
   var txtDMS =  '['+document.getElementById("textDMS").value+']';
