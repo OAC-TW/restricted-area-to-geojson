@@ -196,6 +196,8 @@ document.getElementById('tabTable').style.display = "block";
     evt.currentTarget.className += " active";
   }
 
+// Download GEOJSON TEXT 
+
   function saveTextAsFile()
   {
       var textToWrite = document.getElementById('code').value;
@@ -225,3 +227,21 @@ document.getElementById('tabTable').style.display = "block";
   }
   var button = document.getElementById('save');
         button.addEventListener('click', saveTextAsFile);
+
+
+//DMS -> DD Converter
+function convertDMS2DD()
+{
+  var txtDMS =  '['+document.getElementById("textDMS").value+']';
+  console.log(txtDMS);
+  txt2json = JSON.parse(txtDMS);
+  //console.log(txt2json[1][0]);
+  var txtDD=txt2json.map(subArr=>subArr.map(parseDMSstr))
+  console.log(txtDD);
+  document.getElementById("textDD").innerHTML=(JSON.stringify(txtDD)).replaceAll('],','],\n').replaceAll(',',',\t').slice(1,-1);
+}
+
+function parseDMSstr(item){
+var coordArr = (item.split(":")).map(Number);
+return Number(parseFloat(String(coordArr[0]+coordArr[1]/60+coordArr[2]/3600)).toFixed(5))
+}

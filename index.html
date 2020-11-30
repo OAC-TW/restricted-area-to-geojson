@@ -25,6 +25,7 @@
       <div class="tab">
         <button class="tablinks" onclick="openTab(event, 'tabTable')">表格</button>
         <button class="tablinks" onclick="openTab(event, 'tabGeojson')">Geojson文件</button>
+        <button class="tablinks" onclick="openTab(event, 'tabConvert')">度分秒轉換</button>
       </div>
 
       <div id="tabTable" class="tabcontent">
@@ -101,8 +102,8 @@
       </table>
       </div>
       <div class="center">
-      <button type="button" onclick='processData();' style="text-align: center;">生成圖資</button>
-      <button type="button" onclick='updateGeojson();'style="">生成/更新geojson</button>
+      <button type="button" onclick='processData();' class="btn btn-primary" style="text-align: center;">生成圖資</button>
+      <button type="button" onclick='updateGeojson();'class="btn btn-primary" style="">生成/更新geojson</button>
       </div>
       <p id="updateAlert" class="center" style="margin-right:200px;color:green;"></p>
       <br>
@@ -110,18 +111,49 @@
 
     <!-- geojson tab -->
       <div id="tabGeojson" class="tabcontent">
-        <p>將欲編輯之geojson文檔黏貼至以下區域</p>
-        <button type="button" onclick='editGeoJSON();'>解析geojson文檔</button><br>
-        <!--<p id="titleNumbers"></p>
-        <div id="titleList"></div>-->
         <div id="eTableRegion"></div>
-        <button type="button" onclick='drawGeojson();'>繪製geojson文檔</button>
-      <textarea id="code" rows="20" cols="100"></textarea>
-      <button type="button" value="save" id="save"> 下載geojson文檔</button>
+  
+          <h5 style="text-align: center;">將欲編輯之geojson文檔黏貼至以下區域</h5><br>
+        
+          <br>
+          <textarea style="margin: auto;display: block;" id="code" rows="20" cols="100"></textarea>
+
+          <table class="table">
+            <tr>
+              <td>
+                <button type="button" onclick='editGeoJSON();' class="btn btn-primary" style="margin: auto;display:block">解析geojson文檔</button>
+              </td>
+              <td>
+                <button type="button" onclick='drawGeojson();' class="btn btn-primary" style="margin: auto;display:block">繪製geojson文檔</button>
+              </td>
+              <td>
+              <button type="button" value="save" id="save" class="btn btn-primary" style="margin: auto;display:block"> 下載geojson文檔</button>
+              </td>
+            </tr>
+          </table>
+
       </div>
 
+    <!-- conversion tab -->
+    <div id="tabConvert" class="tabcontent">
+        <table class="table">
+          <tr>
+          <td>
+          <p>將限制區域座標(格式："度:分:秒")黏貼至以下區域</p>
+          <textarea id="textDMS" rows="10" cols="45"></textarea>
+          </td>
+          <td style="vertical-align: middle;text-align: center;">
+          <button type="button" onclick='convertDMS2DD();'class="btn btn-primary btn-lg">轉換</button>
+          </td>
+          <td>
+          <p>轉換後十進位(度)座標</p>   
+          <textarea id="textDD" rows="10" cols="45"></textarea>
+          </td>
+          </tr>
+        </table>
+  
     </div>
-    </div>
+  </div>
    <!--<script>
       (function($){
        $('#mapid').height(window.innerHeight);
